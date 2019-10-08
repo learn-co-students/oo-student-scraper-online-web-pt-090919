@@ -25,15 +25,17 @@ class Scraper
     doc = Nokogiri::HTML(html)
     attribute_hash = {}
 
-    doc.css("div.social-icon-container").each do |social|
-      twitter = social.css("a").attribute("href").value
-        attribute_hash[:twitter] = twitter if twitter.include?("twitter")
-      linkedin = social.css("a[2]").attribute("href").value
-        attribute_hash[:linkedin] = linkedin if linkedin.include?("linkedin")
-      github = social.css("a[3]").attribute("href").value
-        attribute_hash[:github] = github if github.include?("github")
-      blog = social.css("a[4]").attribute("href").value
-        attribute_hash[:blog] = blog if blog.include?(".com")
+    social_box = doc.css("div.social-icon-container a").collect {|icon| icon.attribute("href").value}
+    social_box.each do |url|
+      if url.include?("twitter")
+        attribute_hash[:twitter] = url
+      elsif url.include?("linkedin")
+        attribute_hash[:linkedin] = url
+      elsif url.include?("github")
+        attribute_hash[:github] = url
+      else url.include?(".com")
+        attribute_hash[:blog] = url
+      end
     end
     doc.css("div.vitals-text-container").each do |info|
       attribute_hash[:profile_quote] = info.css("div.profile-quote").text
@@ -42,5 +44,15 @@ class Scraper
       attribute_hash[:bio] = stat.css("p").text
     end
   attribute_hash
+  end
 end
-end
+
+
+# twitter = social.css("a").attribute("href").value
+#   attribute_hash[:twitter] = twitter if twitter.include?("twitter")
+# linkedin = social.css("a[2]").attribute("href").value
+#   attribute_hash[:linkedin] = linkedin if linkedin.include?("linkedin")
+# github = social.css("a[3]").attribute("href").value
+#   attribute_hash[:github] = github if github.include?("github")
+# blog = social.css("a[4]").attribute("href").value
+#   attribute_hash[:blog] = blog if blog.include?(".com")
