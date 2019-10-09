@@ -19,7 +19,6 @@ class Scraper
     student_array
   end
 
-
   def self.scrape_profile_page(profile_url)
     html = open(profile_url)
     doc = Nokogiri::HTML(html)
@@ -37,9 +36,11 @@ class Scraper
         attribute_hash[:blog] = url
       end
     end
+
     doc.css("div.vitals-text-container").each do |info|
       attribute_hash[:profile_quote] = info.css("div.profile-quote").text
     end
+
     doc.css("div.details-container").each do |stat|
       attribute_hash[:bio] = stat.css("p").text
     end
