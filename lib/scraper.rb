@@ -32,13 +32,14 @@ class Scraper
         media_hash[:linkedin] = a
       elsif a.include?("github")
         media_hash[:github] = a
-      elsif a.include?("blog")
+      elsif a.include?("http:")
         media_hash[:blog] = a
       end
       n += 1
       binding.pry
     end
-      media_hash[:bio] = profile.css(".description-holder p").text
+    media_hash[:profile_quote] = profile.css(".profile-quote").text
+    media_hash[:bio] = profile.css(".description-holder p").text
     media_hash
   end
 
