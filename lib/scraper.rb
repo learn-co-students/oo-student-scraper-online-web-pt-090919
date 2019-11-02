@@ -36,7 +36,7 @@ class Scraper
         media_hash[:blog] = a
       end
       n += 1
-      binding.pry
+      #binding.pry
     end
     media_hash[:profile_quote] = profile.css(".profile-quote").text
     media_hash[:bio] = profile.css(".description-holder p").text
