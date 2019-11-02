@@ -21,11 +21,24 @@ class Scraper
 
   def self.scrape_profile_page(profile_url)
     profile = Nokogiri::HTML(open(profile_url))
-    binding.pry
-    
-    media = {
-      
-    }
+    media = profile.css(".vitals-container")
+    media_hash = {}
+    n = 0
+    while media.css("a")[n]["href"] == true
+      a = media.css("a")[n]["href"]
+      if a.include?("twitter")
+        media_hash[:twitter] = a
+      elsif a.include?("linkedin")
+        media_hash[:linkedin] = a
+      elsif a.include?("github")
+        media_hash[:github] = a
+      elsif a.include?("blog")
+        media_hash[:blog] = a
+      n += 1
+      end
+      media_hash[:bio] = media.css(".description-holder p").text
+    end
+    media_hash
   end
 
 end
