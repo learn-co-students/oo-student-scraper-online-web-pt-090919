@@ -24,7 +24,7 @@ class Scraper
     media = profile.css(".vitals-container")
     media_hash = {}
     n = 0
-    while media.css("a")[n]["href"] == true
+    until media.css("a")[n] == nil
       a = media.css("a")[n]["href"]
       if a.include?("twitter")
         media_hash[:twitter] = a
@@ -34,10 +34,11 @@ class Scraper
         media_hash[:github] = a
       elsif a.include?("blog")
         media_hash[:blog] = a
-      n += 1
       end
-      media_hash[:bio] = media.css(".description-holder p").text
+      n += 1
+      binding.pry
     end
+      media_hash[:bio] = profile.css(".description-holder p").text
     media_hash
   end
 
